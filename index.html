@@ -1,2 +1,51 @@
+<script type="text/javascript">
+    function foo() {
 
-<h1>coming soon</h1>
+        var url = "https://pokeapi.co/api/v2/pokemon/" + pokemonName.value;
+        
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var data = JSON.parse(xhttp.responseText);
+
+                if (data.id == null) {
+                    pokemonNameOut.value = "Enter a Pokémon name or number";
+                    return;
+                }
+
+                console.log(data);
+                
+                var wiki = "https://wiki.pokerogue.net/pokedex:" + data.id;
+                window.open(wiki,'_blank');
+                
+                data.name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
+
+                pokemonNameOut.value = "Found Pokémon: " + data.name;
+                pokemonList.innerHTML = '<a href="https://wiki.pokerogue.net/pokedex:' + data.id + '" target="_blank">' + data.name +
+                    '<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + data.id + '.png" alt="' + data.name + '"</a><br>' +
+                    pokemonList.innerHTML;
+            }
+            else if (xhttp.status == 404) {
+                pokemonNameOut.value = "Pokémon not found";
+            }
+            else if (xhttp.status == 0) {
+                pokemonNameOut.value = "Searching...";
+            }
+            else {
+                pokemonNameOut.value = "Error: " + xhttp.status;
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+    }
+    </script>
+
+Search for Pokémon:
+<br>
+<input type="text" id="pokemonName" style="width: 300px;" />
+<button onclick="foo()">Search</button>
+<br>
+<output id="pokemonNameOut"></output>
+<br>
+<output id="pokemonList"></output>
