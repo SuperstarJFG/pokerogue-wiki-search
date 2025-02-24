@@ -1,7 +1,29 @@
 <script type="text/javascript">
     function search() {
+        switch (true) {
+            case pokemonName.value.endsWith("-alola"):
+                var regionlessName = pokemonName.value.split("-")[0];
+                var regionalOffset = 2000;
+                break;
+            case pokemonName.value.endsWith("-galar"):
+                var regionlessName = pokemonName.value.split("-")[0];
+                var regionalOffset = 4000;
+                break;
+            case pokemonName.value.endsWith("-hisui"):
+                var regionlessName = pokemonName.value.split("-")[0];
+                var regionalOffset = 6000;
+                break;
+            case pokemonName.value.endsWith("-paldea"):
+                var regionlessName = pokemonName.value.split("-")[0];
+                var regionalOffset = 8000;
+                break;
+            default:
+                var regionlessName = pokemonName.value;
+                var regionalOffset = 0;
+                break;
+        }
 
-        var api = "https://pokeapi.co/api/v2/pokemon/" + pokemonName.value;
+        var api = "https://pokeapi.co/api/v2/pokemon/" + regionlessName;
         
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -22,11 +44,15 @@
 
                 pokemonNameOut.value = "Found Pokémon: " + data.name;
 
-                var linkStart = '<a href="https://wiki.pokerogue.net/pokedex:' + data.id + '" target="_blank">';
+                console.log(data.id);
+                console.log(regionalOffset);
+                console.log(data.id + regionalOffset);
+
+                var linkStart = '<a href="https://wiki.pokerogue.net/pokedex:' + (data.id + regionalOffset) + '" target="_blank">';
                 pokemonList.innerHTML = 
                     '<tr>' +
                         '<td style="text-align: center;">' + linkStart + data.name + '</a>' + '</td>' +
-                        '<td>' + linkStart + '<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + data.id + '.png">' + '</a>' + '</td>' +
+                        '<td>' + linkStart + '<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + pokemonName.value + '.png">' + '</a>' + '</td>' +
                     '</tr>' +
                     pokemonList.innerHTML;
             }
