@@ -9,7 +9,7 @@
                 var data = JSON.parse(xhttp.responseText);
 
                 if (data.id == null) {
-                    pokemonNameOut.value = "Enter a Pokémon name or number";
+                    pokemonNameOut.value = "Enter a Pokémon name or dex number";
                     return;
                 }
 
@@ -21,14 +21,13 @@
                 data.name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
 
                 pokemonNameOut.value = "Found Pokémon: " + data.name;
-                pokemonList.innerHTML = '<a href="https://wiki.pokerogue.net/pokedex:' + data.id + '" target="_blank">' +
-                    '<table>' +
+
+                var linkStart = '<a href="https://wiki.pokerogue.net/pokedex:' + data.id + '" target="_blank">';
+                pokemonList.innerHTML = 
                     '<tr>' +
-                        '<td>' + data.name + '</td>' +
-                        '<td><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + data.id + '.png"></td>' +
+                        '<td style="text-align: center;">' + linkStart + data.name + '</a>' + '</td>' +
+                        '<td>' + linkStart + '<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + data.id + '.png">' + '</a>' + '</td>' +
                     '</tr>' +
-                    '</table>' +
-                    '</a>' +
                     pokemonList.innerHTML;
             }
             else if (xhttp.status == 404) {
@@ -47,11 +46,14 @@
     }
     </script>
 
-Search for Pokémon:
-<br>
-<input type="text" id="pokemonName" style="width: 300px;" />
-<button onclick="search()">Search</button>
-<br>
-<output id="pokemonNameOut"></output>
-<br>
-<output id="pokemonList"></output>
+<div style="text-align: center;">
+    Search for Pokémon:
+    <br>
+    <input type="text" id="pokemonName" style="width: 300px;" />
+    <button onclick="search()">Search</button>
+    <br>
+    <output id="pokemonNameOut"></output>
+    <br>
+    <table id="pokemonList" style="margin: 0px auto;"></table>
+    Search for regional variants with the format: <code>raichu-alola</code>
+</div>
