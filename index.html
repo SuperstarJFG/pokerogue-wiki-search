@@ -1,7 +1,7 @@
 <script type="text/javascript">
-    function foo() {
+    function search() {
 
-        var url = "https://pokeapi.co/api/v2/pokemon/" + pokemonName.value;
+        var api = "https://pokeapi.co/api/v2/pokemon/" + pokemonName.value;
         
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -15,14 +15,20 @@
 
                 console.log(data);
                 
-                var wiki = "https://wiki.pokerogue.net/pokedex:" + data.id;
-                window.open(wiki,'_blank');
+                var wikiLink = "https://wiki.pokerogue.net/pokedex:" + data.id;
+                window.open(wikiLink,'_blank');
                 
                 data.name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
 
                 pokemonNameOut.value = "Found Pokémon: " + data.name;
-                pokemonList.innerHTML = '<a href="https://wiki.pokerogue.net/pokedex:' + data.id + '" target="_blank">' + data.name +
-                    '<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + data.id + '.png" alt="' + data.name + '"</a><br>' +
+                pokemonList.innerHTML = '<a href="https://wiki.pokerogue.net/pokedex:' + data.id + '" target="_blank">' +
+                    '<table>' +
+                    '<tr>' +
+                        '<td>' + data.name + '</td>' +
+                        '<td><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + data.id + '.png"></td>' +
+                    '</tr>' +
+                    '</table>' +
+                    '</a>' +
                     pokemonList.innerHTML;
             }
             else if (xhttp.status == 404) {
@@ -35,7 +41,7 @@
                 pokemonNameOut.value = "Error: " + xhttp.status;
             }
         };
-        xhttp.open("GET", url, true);
+        xhttp.open("GET", api, true);
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send();
     }
@@ -44,7 +50,7 @@
 Search for Pokémon:
 <br>
 <input type="text" id="pokemonName" style="width: 300px;" />
-<button onclick="foo()">Search</button>
+<button onclick="search()">Search</button>
 <br>
 <output id="pokemonNameOut"></output>
 <br>
